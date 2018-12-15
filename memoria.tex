@@ -1,9 +1,10 @@
-\documentclass[11pt,a4paper,oneside]{article}
+\documentclass[12pt,a4paper,oneside]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{varwidth}
+\usepackage{graphicx}
 
 \makeatletter
 \def\BState{\State\hskip-\ALG@thistlm}
@@ -15,6 +16,8 @@
 \let\oldReturn\Return
 \renewcommand{\Return}{\State\oldReturn}
 \providecommand{\abs}[1]{\lvert#1\rvert}
+
+\date{}
 
 \author{Gabriel Rodríguez Canal}
 \title{Seam Carving - Algoritmos y Computación}
@@ -226,6 +229,25 @@ $\mathcal{O}(n \times nSeams)$.
     \end{algorithmic}
 \end{algorithm}
 
+$\newline$A continuación se muestra el operador de Sobel, del que se hará un somero análisis de
+ coste para integrarlo en correspondiente al algoritmo \ref{seamCarvingR}.
+\begin{figure}
+    \includegraphics[width = \textwidth]{sobelop.png}
+\end{figure}
+
+Siendo \textbf{A} la matriz de la imagen y \textbf{*} el operador de convolución: por cada
+ píxel han de hacerse 9 productos y 9 sumas para obtener $G_x$. Para una imagen de dimensión
+ $n \cdot m$ han de hacerse 18·m·n operaciones; en notación asíntotica, $\mathcal{O}(n \cdot m)$.
+ Análogamente, han de hacerse el mismo número de operaciones para obtener $G_y$.
+Para obtener G ha de hallarse la potencia 2 de $G_x$ y $G_y$ elemento a elemento. Esto supone
+ un coste de $\mathcal{O}(n \cdot m)$ en ambos casos. Para la suma de estas dos matrices se tiene, 
+ trivialmente, un coste de $\mathcal{O}(n \cdot m)$ y, finalmente, para la raíz (elemento a elemento),
+ se vuelve a tener un coste de $\mathcal{O}(n \cdot m)$. El máximo de todos los costes es
+ $\mathcal{O}(n \cdot m)$, coste del operador de Sobel.
+
+$\newline$El coste de la línea 4 será de $\mathcal{O}(n \cdot m)$ en cada iteración, pues se 
+trata de una transformación lineal del valor de cada píxel.
+
 \begin{table}
     \center
     \label{seamCarvingRTable}
@@ -235,9 +257,9 @@ $\mathcal{O}(n \times nSeams)$.
         \hline
         1 & $\mathcal{O}(1)$ & 1 \\
         \hline
-        4 &  ? & nSeams \\
+        4 &  $\mathcal{O}(n \times m)$ & nSeams \\
         \hline
-        5 & ? & nSeams \\
+        5 & $\mathcal{O}(n \times m)$ & nSeams \\
         \hline
         6 & $\mathcal{O}(n \times m)$ & nSeams \\
         \hline
@@ -328,6 +350,72 @@ $\newline$La fila 2 de la tabla \ref{seamCarvingATable} muestra el mayor coste d
 algoritmo \ref{seamCarvingA}, es decir, el algoritmo en estudio, Seam Carving. De forma asintótica 
 el coste del algoritmo es, por tanto, $\mathcal{O}(nSeams \times n \times m)$.
 
+\section{Apéndice: resultados}
+\subsection{Reducción con hilos verticales}
+A continuación se muestra el resultado de aplicar reducción por Seam Carving con 500 hilos:
+\begin{figure}[!htb]
+    \minipage{0.32\textwidth}
+      \includegraphics[width=\linewidth]{Broadway_tower_edit.jpg}
+      \caption{Imagen original}\label{broadwayorig}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+      \includegraphics[width=\linewidth]{500-reductionenergy.png}
+      \caption{Mapa de energía con 500 hilos superpuestos}\label{broadwayenergy}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+      \includegraphics[width=\linewidth]{500-reduction.jpg}
+      \caption{Resultado de seam-carving con 500 hilos}\label{broadwayseam}
+    \endminipage
+\end{figure}
 
+\subsection{Reducción con hilos horizontales}
+En las siguientes se imágenes se puede ver el resultado de aplicar reducción por 
+Seam Carving vertical con 200 hilos:
+
+\begin{figure}[!htb]
+    \minipage{0.32\textwidth}
+      \includegraphics[width=\linewidth]{kinkakuji.jpg}
+      \caption{Imagen original}\label{kinkakujiorig}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+      \includegraphics[width=\linewidth]{200-reductionenergyhorizontal.png}
+      \caption{Mapa de energía con 200 hilos superpuestos}\label{kinkakujienergy}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+      \includegraphics[width=\linewidth]{200-reductionhorizontal.jpg}
+      \caption{Resultado de reducción por seam-carving con 200 hilos}\label{kinkakujiseam}
+    \endminipage
+\end{figure}
+
+\subsection{Ampliación con hilos verticales}
+Las siguientes imágenes muestran la ampliación por Seam Carving con 250 hilos verticales:
+\begin{figure}[!htb]
+    \minipage{0.32\textwidth}
+      \includegraphics[width=\linewidth]{Broadway_tower_edit.jpg}
+      \caption{Imagen original}\label{kinkakujiorig}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+      \includegraphics[width=\linewidth]{250-enlargementenergyv.png}
+      \caption{Mapa de energía con 250 hilos superpuestos}\label{kinkakujienergy}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+      \includegraphics[width=\linewidth]{250-enlargementv.jpg}
+      \caption{Resultado de ampliación por seam-carving con 250 hilos}\label{kinkakujiseam}
+    \endminipage
+\end{figure}
+
+\section{Referencias}
+\begin{enumerate}
+\item Wikipedia contributors. "Seam carving." Wikipedia, The Free Encyclopedia.
+ Wikipedia, The Free Encyclopedia, 14 Nov. 2018. Web. 15 Dec. 2018.
+\item Wikipedia contributors. "Kernel (image processing)." Wikipedia, The Free Encyclopedia.
+ Wikipedia, The Free Encyclopedia, 13 Dec. 2018. Web. 15 Dec. 2018. 
+\item Wikipedia contributors. "Sobel operator." Wikipedia, The Free Encyclopedia.
+ Wikipedia, The Free Encyclopedia, 27 Nov. 2018. Web. 15 Dec. 2018. 
+\item Wikipedia contributors. "Kernel (image processing)." Wikipedia, The Free Encyclopedia.
+ Wikipedia, The Free Encyclopedia, 13 Dec. 2018. Web. 15 Dec. 2018. 
+\item Avidan, Shai, and Ariel Shamir. "Seam carving for content-aware image resizing."
+ ACM Transactions on graphics (TOG). Vol. 26. No. 3. ACM, 2007.
+\end{enumerate}
 \end{document}
 

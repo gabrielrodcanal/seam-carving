@@ -1,4 +1,6 @@
 from seamcarving import *
+import sys
+from PIL import Image
 
 def console():
     print('Enter the image source path:')
@@ -73,30 +75,53 @@ def seamCarve(imRGBOriginal, horizontal, enlargement, nSeams):
         eOriginal = eOriginal.transpose()
         imRGBSeamCarved = imRGBSeamCarved.transpose((1,0,2))
 
-    plt.subplot(1,3,1)
-    plt.title('Energy map with seams')
-    plt.imshow(eOriginal, cmap = 'gray')
+    fig = plt.figure()
+
+    plot1 = fig.add_subplot(1,3,1)
+    plot1.imshow(eOriginal, cmap = 'gray')
 
     if horizontal:
         for s in range(nSeams):
-            plt.plot(list(range(len(seam[0]))), seam[s], linewidth = 0.5, color = 'r')
+            plot1.plot(list(range(len(seam[0]))), seam[s], linewidth = 0.5, color = 'r')
 
     else:
         for s in range(nSeams):
-            plt.plot(seam[s], list(range(len(seam[0]))), linewidth = 0.5, color = 'r')
+            plot1.plot(seam[s], list(range(len(seam[0]))), linewidth = 0.5, color = 'r')
 
     e = np.delete(e, (0,len(e)-1), axis = 0)
     e = np.delete(e, (0,len(e[0])-1), axis = 1)
 
-    plt.subplot(1,3,2)
-    plt.title('Original image')
-    plt.imshow(imRGBOriginal)
+    if not horizontal:
+        plot2 = fig.add_subplot(1,3,2, sharey = plot1)
+    else:
+        plot2 = fig.add_subplot(1,3,2, sharex = plot1)
 
-    plt.subplot(1,3,3)
-    plt.title('Seam carved image')
-    plt.imshow(imRGBSeamCarved)
+    plot2.imshow(imRGBOriginal)
+
+    if not horizontal:
+        plot3 = fig.add_subplot(1,3,3, sharey = plot1)
+    else:
+        plot3 = fig.add_subplot(1,3,3, sharex = plot1)
+
+    
+    plot3.imshow(imRGBSeamCarved)
 
     plt.show()
 
+    #Save seam carved image
+    im = Image.fromarray(imRGBSeamCarved)
+    im.save('seamcarved.jpg')    
+
 if __name__ == '__main__':
-    console()
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '--testrv':
+            imRGBOriginal = imread("Broadway_tower_edit.jpg")
+            seamCarve(imRGBOriginal, False, False, 500)
+        elif sys.argv[1] == '--testrh':
+            imRGBOriginal = imread("kinkakuji.jpg")
+            seamCarve(imRGBOriginal, True, False, 200)
+        elif sys.argv[1] == '--testev':
+            imRGBOriginal = imread("Broadway_tower_edit.jpg")
+            seamCarve(imRGBOriginal, False, True, 250)
+    else:
+        console()
