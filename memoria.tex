@@ -136,7 +136,6 @@ las mismas funciones con la matriz original de la imagen traspuesta.
 \end{algorithm}
 
 \begin{table}
-    \label{getSeamTable}
     \center
     \begin{tabular}{|c|c|c|}
         \hline
@@ -155,12 +154,12 @@ las mismas funciones con la matriz original de la imagen traspuesta.
         12 & $\mathcal{O}(1)$ & $n-1$ \\
         \hline
     \end{tabular}
-    \caption{Análisis del algoritmo \ref{getSeam}}
+    \caption{Análisis del algoritmo \ref{getSeam}}\label{getSeamTable}
 \end{table}
 
 La fila 6 de la tabla \ref{getSeamTable} muestra el mayor coste de las operaciones del
 algoritmo \ref{getSeam}. De forma asintótica el coste de la función es, por tanto,
- $\mathcal{O}(n \times m)$.
+ $\mathcal{O}(n \cdot m)$.
 
 \begin{algorithm}
     \caption{Reubicar coordenadas reducción}\label{fixLSeam}
@@ -184,7 +183,6 @@ algoritmo \ref{getSeam}. De forma asintótica el coste de la función es, por ta
 \end{algorithm}
 
 \begin{table}
-    \label{fixLSeamTable}
     \center
     \begin{tabular}{|c|c|c|c|}
         \hline
@@ -205,12 +203,12 @@ algoritmo \ref{getSeam}. De forma asintótica el coste de la función es, por ta
         12 & $\mathcal{O}(1)$ & $n$ & $n$ \\
         \hline
     \end{tabular}
-    \caption{Análisis del algoritmo \ref{fixLSeam}}
+    \caption{Análisis del algoritmo \ref{fixLSeam}}\label{fixLSeamTable}
 \end{table}
 
 $\newline$La fila 8 de la tabla \ref{fixLSeamTable} muestra el mayor coste de las operaciones del
 algoritmo \ref{fixLSeam}. De forma asintótica el coste de la función, por tanto,
-$\mathcal{O}(n \times nSeams)$.
+$\mathcal{O}(n \cdot nSeams)$.
 
 \begin{algorithm}
     \caption{Seam Carving Reducción}\label{seamCarvingR}
@@ -230,7 +228,7 @@ $\mathcal{O}(n \times nSeams)$.
 \end{algorithm}
 
 $\newline$A continuación se muestra el operador de Sobel, del que se hará un somero análisis de
- coste para integrarlo en correspondiente al algoritmo \ref{seamCarvingR}.
+ coste para integrarlo en el correspondiente al algoritmo \ref{seamCarvingR}.
 \begin{figure}
     \includegraphics[width = \textwidth]{sobelop.png}
 \end{figure}
@@ -250,30 +248,29 @@ trata de una transformación lineal del valor de cada píxel.
 
 \begin{table}
     \center
-    \label{seamCarvingRTable}
     \begin{tabular}{|c|c|c|}
         \hline
         línea & coste & nº veces \\
         \hline
         1 & $\mathcal{O}(1)$ & 1 \\
         \hline
-        4 &  $\mathcal{O}(n \times m)$ & nSeams \\
+        4 &  $\mathcal{O}(n \cdot m)$ & nSeams \\
         \hline
-        5 & $\mathcal{O}(n \times m)$ & nSeams \\
+        5 & $\mathcal{O}(n \cdot m)$ & nSeams \\
         \hline
-        6 & $\mathcal{O}(n \times m)$ & nSeams \\
+        6 & $\mathcal{O}(n \cdot m)$ & nSeams \\
         \hline
         7 & $\mathcal{O}(n)$ & nSeams \\
         \hline
-        8 & $\mathcal{O}(nSeams \times n)$ & nSeams \\
+        8 & $\mathcal{O}(nSeams \cdot n)$ & nSeams \\
         \hline
     \end{tabular}
-    \caption{Análisis del algoritmo \ref{seamCarvingR}}
+    \caption{Análisis del algoritmo \ref{seamCarvingR}}\label{seamCarvingRTable}
 \end{table}
 
 $\newline$La fila 6 de la tabla \ref{seamCarvingRTable} muestra el mayor coste de las operaciones del
 algoritmo \ref{seamCarvingR}, es decir, el algoritmo en estudio, Seam Carving. \textbf{De forma asintótica 
-el coste del algoritmo es, por tanto, $\mathcal{O}(nSeams \times n \times m)$.}
+el coste del algoritmo es, por tanto, $\mathcal{O}(nSeams \cdot n \cdot m)$.}
 
 \subsection{Bonus - ampliación de tamaño}
 \begin{algorithm}
@@ -295,7 +292,6 @@ el coste del algoritmo es, por tanto, $\mathcal{O}(nSeams \times n \times m)$.}
 \end{algorithm}
 
 \begin{table}
-    \label{fixNSeamTable}
     \begin{tabular}{|c|c|c|c|}
         \hline
         línea & coste & nº veces (W) & nº veces (A) \\
@@ -309,12 +305,16 @@ el coste del algoritmo es, por tanto, $\mathcal{O}(nSeams \times n \times m)$.}
         7 & $\mathcal{O}(1)$ & $n \times length(otherSeams)$ & $n$ \\
         \hline
     \end{tabular}
-    \caption{Análisis del algoritmo \ref{fixNSeam}}
+    \caption{Análisis del algoritmo \ref{fixNSeam}}\label{fixNSeamTable}
 \end{table}
 
-$\newline$La fila 6 de la tabla \ref{fixNSeam} muestra el mayor coste de las operaciones del
-algoritmo \ref{fixNSeamTable}, es decir, el algoritmo en estudio, Seam Carving. De forma asintótica 
-el coste del algoritmo es, por tanto, $\mathcal{O}(n \times length(otherSeams))$.
+$\newline$La fila 6 de la tabla \ref{fixNSeamTable} muestra el mayor coste de las operaciones del
+algoritmo \ref{fixNSeam}, es decir, el algoritmo en estudio, Seam Carving. De forma asintótica 
+el coste del algoritmo es, por tanto, $\mathcal{O}(n \cdot length(otherSeams))$. Siguiendo con
+la nomenclatura utilizada hasta ahora se puede considerar que $length(otherSeams)$ es 
+$nSeams$, de modo que la complejidad (para que la comparación sea más sencilla) se expresa como: 
+$\mathcal{O}(n \cdot nSeams)$.
+
 
 \begin{algorithm}
     \caption{Seam Carving Ampliación}\label{seamCarvingA}
@@ -331,24 +331,23 @@ el coste del algoritmo es, por tanto, $\mathcal{O}(n \times length(otherSeams))$
 
 \begin{table}
     \center
-    \label{seamCarvingATable}
     \begin{tabular}{|c|c|c|}
         \hline
         línea & coste & nº veces \\
         \hline
-        2 & $\mathcal{O}(nSeams \times n \times m)$ & 1 \\
+        2 & $\mathcal{O}(nSeams \cdot n \cdot m)$ & 1 \\
         \hline
         4 & $\mathcal{O}(n)$ & nSeams \\
         \hline
-        5 & $\mathcal{O}(nSeams \times n)$ & nSeams \\
+        5 & $\mathcal{O}(nSeams \cdot n)$ & nSeams \\
         \hline
     \end{tabular}
-    \caption{Análisis del algoritmo \ref{seamCarvingA}}
+    \caption{Análisis del algoritmo \ref{seamCarvingA}}\label{seamCarvingATable}
 \end{table}
 
 $\newline$La fila 2 de la tabla \ref{seamCarvingATable} muestra el mayor coste de las operaciones del
 algoritmo \ref{seamCarvingA}, es decir, el algoritmo en estudio, Seam Carving. De forma asintótica 
-el coste del algoritmo es, por tanto, $\mathcal{O}(nSeams \times n \times m)$.
+el coste del algoritmo es, por tanto, $\mathcal{O}(nSeams \cdot n \cdot m)$.
 
 \section{Apéndice: resultados}
 \subsection{Reducción con hilos verticales}
